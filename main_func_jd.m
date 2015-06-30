@@ -4,24 +4,30 @@ function y = main_func_jd(dir)
     
 %     do the transpose
     tm = tm';
+    
     signal = signal';
     
 %     get the ecg signal
     ecg = signal(1, :);
     
+%  !!!!!!   this line must be executed if no annotation file exists
+
 %     ecg_filtering_total(ecg, tm, 'ecg_filtered_261');
     
+%     read the annotation file
     ann = qrs_detect_261('ecg_filtered_261')';
     
+%     read the bp 
     bp = signal(2, :);
     
-    percentiles = get_percentile_from_ecg_rr_261(ann, tm(2) - tm(1));
+%     get the 30 and 70 percentile
+    percentiles = get_percentile_from_ecg_rr_261(ann, tm(2) - tm(1), 1, 99);
+
+    disp(percentiles)
     
-%     disp(percentiles);
+    bp_filter_261(bp, percentiles, 5, get_frequency_261(tm));
     
-%     plot(bp);
-%     figure
-    bp_filter_261(bp, [2, 4], 5, get_frequency_261(tm));
+    bp_test_261(tm, bp);
     
 %     plot(bp);
 %     subplot(2, 1, 1);
