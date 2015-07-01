@@ -17,6 +17,8 @@ function y = main_func_jd(dir)
 %     read the annotation file
     ann = qrs_detect_261('ecg_filtered_261')';
     
+    ann_original = ann;
+    
     ann_back = ann;
     
     ann_back(end) = [];
@@ -132,24 +134,44 @@ function y = main_func_jd(dir)
     
     count_short = length(ann_dist(ann_dist <= mean_v - 3* std_v));
     
-    count_longer = length(ann_dist(ann_dist >= mean_v + 3* std_v)));
+    count_longer = length(ann_dist(ann_dist >= mean_v + 3* std_v));
     
     if count_short == 0
         
-        if  counter_longer == 0 
+        if  count_longer == 0 
             
         else
             adding_missed_points_261();
+            disp('there is a missing point')
         end
     else
         filter_wrong_points_261();
-        
-        if  counter_longer == 0 
+        disp('there is a spurious point')
+        if  count_longer == 0 
             
         else
-            
+            adding_missed_points_261();
+            disp('there is a missing point')
         end
     end
+    
+    hold off;
+    
+    plot(tm, ecg);
+    
+    hold on;
+    
+    tm_high = zeros(1, length(tm));
+    
+    tm_high_2 = zeros(1, length(tm));
+    
+    tm_high_2(ann_original) = 2;
+    
+    tm_high(ann) = 1;
+    
+    stem(tm, tm_high, 'ro');
+    
+    stem(tm, tm_high_2, 'go');
     
     %%%%%%%%%%%%%%adding missing beats%%%%%%%%%%%%%%%%%%%%%%
     
