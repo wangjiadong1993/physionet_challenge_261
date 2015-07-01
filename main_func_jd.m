@@ -55,9 +55,53 @@ function y = main_func_jd(dir)
     disp(output);
     
     
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    ann_first  = ann(1);
+    ann_last   = ann(end);
+    
+    bnn_first  = bnn(1);
+    bnn_last   = bnn(end);
+    
+    
+    dif_array = search_delay_261(ann, bnn);
+    
+    disp([mean(dif_array), std(dif_array), min(dif_array), max(dif_array), length(dif_array)]);
+    
+    dif_array(dif_array == 0 ) = [];
+    
+    disp([mean(dif_array), std(dif_array), min(dif_array), max(dif_array), length(dif_array)]);
+    
+    mean_v = mean(dif_array);
+    
+    std_v = std(dif_array);
+    
+    dif_array(dif_array >= mean_v + 3*std_v) = [];
+    dif_array(dif_array <= mean_v - 3*std_v) = [];
+    
+    disp([mean(dif_array), std(dif_array), min(dif_array), max(dif_array), length(dif_array)]);
+    
+    mean_v = mean(dif_array);
+    
+    std_v = std(dif_array);
+    
+    dif_array(dif_array >= mean_v + 3*std_v) = [];
+    dif_array(dif_array <= mean_v - 3*std_v) = [];
+    
+    disp([mean(dif_array), std(dif_array), min(dif_array), max(dif_array), length(dif_array)]);
+    
+    
+    delay_length = mean(dif_array);
     
     
     
+    
+%     disp(dif_array);
+    
+    
+    
+%     A = histc(ann, bnn);
+%     disp(A);
     
     
     
