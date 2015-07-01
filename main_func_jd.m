@@ -57,11 +57,11 @@ function y = main_func_jd(dir)
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-    ann_first  = ann(1);
-    ann_last   = ann(end);
-    
-    bnn_first  = bnn(1);
-    bnn_last   = bnn(end);
+%     ann_first  = ann(1);
+%     ann_last   = ann(end);
+%     
+%     bnn_first  = bnn(1);
+%     bnn_last   = bnn(end);
     
     
     dif_array = search_delay_261(ann, bnn);
@@ -77,6 +77,7 @@ function y = main_func_jd(dir)
     std_v = std(dif_array);
     
     dif_array(dif_array >= mean_v + 3*std_v) = [];
+    
     dif_array(dif_array <= mean_v - 3*std_v) = [];
     
     disp([mean(dif_array), std(dif_array), min(dif_array), max(dif_array), length(dif_array)]);
@@ -86,6 +87,7 @@ function y = main_func_jd(dir)
     std_v = std(dif_array);
     
     dif_array(dif_array >= mean_v + 3*std_v) = [];
+    
     dif_array(dif_array <= mean_v - 3*std_v) = [];
     
     disp([mean(dif_array), std(dif_array), min(dif_array), max(dif_array), length(dif_array)]);
@@ -93,8 +95,65 @@ function y = main_func_jd(dir)
     
     delay_length = mean(dif_array);
     
+    beats  = zeros(1, length(ann)+length(bnn));
+    beats_length = 0;
     
+    delta_width = 25;
     
+    %%%%%%%%%%%%%filtering wrong ann%%%%%%%%%%%%%%%%%%
+    for i = ann
+        
+%         temp_a = [i - delay_length, i + delay_length];
+        
+        temp_b = bnn(bnn <= i + delay_length + delta_width );
+        
+        temp_b = temp_b(temp_b >= i + delay_length - delta_width);
+        
+        if ~isempty(temp_b)
+            beats(beats_length + 1) = i;
+            beats_length = beats_length + 1;
+        end
+        
+    end
+    
+    ann = beats(beats ~= 0);
+    
+%     disp(beats(beats ~= 0));
+    
+    ann_back = ann;
+    
+    ann_back(end) = [];
+    
+    ann_dist = ann - [0, ann_back];
+    
+    mean_v = mean(ann_dist);
+    
+    std_v = std(ann_dist);
+    
+    count_short = length(ann_dist(ann_dist <= mean_v - 3* std_v));
+    
+    count_longer = length(ann_dist(ann_dist >= mean_v + 3* std_v)));
+    
+    if count_short == 0
+        
+        if  counter_longer == 0 
+            
+        else
+            adding_missed_points_261();
+        end
+    else
+        filter_wrong_points_261();
+        
+        if  counter_longer == 0 
+            
+        else
+            
+        end
+    end
+    
+    %%%%%%%%%%%%%%adding missing beats%%%%%%%%%%%%%%%%%%%%%%
+    
+%     for 
     
 %     disp(dif_array);
     
