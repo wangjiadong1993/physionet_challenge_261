@@ -141,16 +141,16 @@ function y = main_func_jd(dir)
         if  count_longer == 0 
             
         else
-            adding_missed_points_261();
+            adding_missed_points_261(tm, ann, ann_dist);
             disp('there is a missing point')
         end
     else
-        filter_wrong_points_261();
+        filter_wrong_points_261(tm, ann, ann_dist);
         disp('there is a spurious point')
         if  count_longer == 0 
             
         else
-            adding_missed_points_261();
+            adding_missed_points_261(tm, ann, ann_dist);
             disp('there is a missing point')
         end
     end
