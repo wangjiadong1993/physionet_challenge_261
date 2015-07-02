@@ -12,7 +12,7 @@ function ann =  adding_missed_points_261(tm, ann, ann_dist)
             break;
         end
         
-        lengths = private_split_interval_261(ann_dist(id), mean_v, std_v);
+        lengths = private_split_interval_261(ann_dist(id), mean_v, std_v*3);
         
         if length(lengths) == 1
         
@@ -40,18 +40,18 @@ function y = private_split_interval_261(length_v, mean_v, variation_v)
     
     count_min = length_v/(mean_v + variation_v);
     
-    if round(count_min) == count_min
-        
-        y = zeros(1, round(count_min));
-        y = y + (mean_v + variation_v);
-%         return y;
+%     if round(count_min) == count_min
+%         
+%         y = zeros(1, round(count_min));
+%         y = y + (mean_v + variation_v);
+% %         return y;
+%     
+%     elseif round(count_max) == count_max
+%         
+%         y = zeros(1, round(count_max));
+%         y = y + (mean_v - variation_v);
     
-    elseif round(count_max) == count_max
-        
-        y = zeros(1, round(count_max));
-        y = y + (mean_v - variation_v);
-    
-    elseif round(count_max) ~= round(count_min)
+    if round(count_max) ~= round(count_min)
         
         dif_v  = abs(round(count_max) - round(count_min));
         
@@ -85,9 +85,11 @@ function y = private_split_interval_261(length_v, mean_v, variation_v)
         
         y = zeros(1, length_temp);
             
-        y = y + mean_v;
+        length_most = mean_v + variation_v;
         
-        y(end) = y(end) + (length_v - length_temp * mean_v);
+        y = y + length_most;
+        
+        y(end) = y(end) + (length_v - length_temp * length_most);
         
     end
     
